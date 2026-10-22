@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kaelz FX Journal</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101114;color:#f2f2f2;font-family:Arial,sans-serif;padding:20px}
+header{padding:22px 0;border-bottom:1px solid #333}
+h1{margin:0;font-size:27px}
+p{color:#aaa;line-height:1.6}
+.card{background:#1b1c21;border:1px solid #333;border-radius:14px;padding:18px;margin:18px 0}
+label{display:block;margin:14px 0 7px;color:#ddd}
+input,textarea{width:100%;padding:12px;background:#101114;color:white;border:1px solid #444;border-radius:8px;font-size:16px}
+textarea{min-height:85px;resize:vertical}
+button{padding:12px 16px;border:0;border-radius:8px;background:#eee;color:#111;font-weight:bold;margin-top:14px}
+.progress{height:8px;background:#333;border-radius:8px;overflow:hidden}
+#bar{height:100%;width:0;background:#ddd}
+small{color:#aaa}
+</style>
+</head>
+<body>
+<header>
+<p>TRADING EDUCATION • DEMO ACCOUNT</p>
+<h1>KAELZ FX</h1>
+<p>Digital Journal — Belajar, berlatih, evaluasi.</p>
+</header>
+<div class="card">
+<h2>Progres Belajar</h2>
+<h3 id="count">Day 0 / 30</h3>
+<div class="progress"><div id="bar"></div></div>
+<p>Fokus: konsistensi, SNR, dan manajemen risiko.</p>
+</div>
+<div class="card">
+<h2>Jurnal Harian</h2>
+<label>Hari belajar</label>
+<select id="day" style="width:100%;padding:12px;background:#101114;color:white;border:1px solid #444;border-radius:8px">
+</select>
+<label>Tanggal belajar</label>
+<input id="date" type="date">
+<label>Materi yang dipelajari</label>
+<textarea id="material" placeholder="Apa yang kamu pelajari hari ini?"></textarea>
+<label>Latihan / jawaban saya</label>
+<textarea id="practice" placeholder="Catat latihan demo atau jawabanmu."></textarea>
+<label>Hal yang sudah saya pahami</label>
+<textarea id="understood" placeholder="Apa yang sudah kamu pahami?"></textarea>
+<label>Bagian yang masih membingungkan</label>
+<textarea id="confused" placeholder="Apa yang perlu dipelajari lagi?"></textarea>
+<label>Evaluasi diri</label>
+<textarea id="review" placeholder="Kesalahan, alasan, dan rencana perbaikan."></textarea>
+<button onclick="save()">Simpan Jurnal</button>
+<button onclick="load()">Muat Jurnal</button>
+<p id="status"></p>
+<small>Data tersimpan di penyimpanan browser HP ini. Jangan hapus data situs jika ingin mempertahankannya.</small>
+</div>
+<script>
+const day=document.getElementById('day');
+for(let i=1;i<=30;i++){let o=document.createElement('option');o.value=i;o.textContent='Day '+i;day.appendChild(o)}
+function key(){return 'kaelzfx-day-'+day.value}
+function update(){let n=0;for(let i=1;i<=30;i++)if(localStorage.getItem('kaelzfx-day-'+i))n++;document.getElementById('count').textContent='Day '+n+' / 30';document.getElementById('bar').style.width=(n/30*100)+'%'}
+function save(){let data={};['date','material','practice','understood','confused','review'].forEach(id=>data[id]=document.getElementById(id).value);localStorage.setItem(key(),JSON.stringify(data));document.getElementById('status').textContent='Jurnal berhasil disimpan di browser ini.';update()}
+function load(){let data=JSON.parse(localStorage.getItem(key())||'{}');['date','material','practice','understood','confused','review'].forEach(id=>document.getElementById(id).value=data[id]||'');document.getElementById('status').textContent='Jurnal dimuat.'}
+day.addEventListener('change',load);document.getElementById('date').valueAsDate=new Date();update();
+</script>
+</body>
+</html>
